@@ -1,5 +1,3 @@
-"""Analisador léxico da DSL de autômatos."""
-
 import re
 from dataclasses import dataclass
 

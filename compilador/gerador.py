@@ -1,23 +1,3 @@
-"""Gera o formato binário FSM2 entendido pelo Arduino (com suporte a botões e regras).
-
-Formato FSM2:
-  4 bytes: assinatura ASCII 'FSM2'
-  1 byte : índice do estado inicial
-  1 byte : quantidade de estados
-  1 byte : quantidade de botões
-  Para cada botão (1 byte):
-    1 byte : pino digital do Arduino
-  Para cada estado (8 bytes):
-    1 byte : máscara de LEDs (bit 0 vermelho, bit 1 amarelo, bit 2 verde)
-    4 bytes: duração em milissegundos (unsigned, little-endian)
-    1 byte : índice do próximo estado ao esgotar o tempo
-    1 byte : índice inicial na tabela de regras
-    1 byte : quantidade de regras condicionais deste estado
-  Para cada regra (2 bytes):
-    1 byte : índice do botão
-    1 byte : índice do estado de destino
-"""
-
 import struct
 
 MASCARAS_LED = {
@@ -72,7 +52,6 @@ def gerar(ast):
             idx_destino = indices_estados[regra["destino"]]
             regras_serializadas.extend(struct.pack("<BB", idx_botao, idx_destino))
 
-    # 3. Tabela de regras condicionais
     dados.extend(regras_serializadas)
 
     return bytes(dados)
